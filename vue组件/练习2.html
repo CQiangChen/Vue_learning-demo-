@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body >
+    <div id='app'>
+        <base-input label="姓名" v-model="check" @input="inpt" @play="playGo"></base-input>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        Vue.component('base-input',{
+            inheritAttrs:false,
+
+            props:{
+                label:String,
+                value:String
+            },
+            template: `
+                <label>
+                {{label}}
+                <input v-bind="$attrs"
+                :value="value"
+                v-on:input="input"
+                @click="$listeners.play()"
+                />
+                </label>
+            `,
+            mounted() {
+                console.log(this.$attrs);
+            },
+            methods:{
+                input:function(event){
+                    this.$emit('input',event.target.value)
+                }
+            }
+        })
+
+        const app = new Vue({
+        el: '#app',
+        data: {
+            check:''    
+        },
+        methods:{
+            playGo:function(){
+                alert('play')
+            },
+            inpt:function(){
+                alert('inpt')
+            }
+        }
+
+    });
+    </script>
+</body>
+</html>

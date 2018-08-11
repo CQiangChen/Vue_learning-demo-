@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body id='box'>
+    <div id="app-1">
+        <div v-on:click="dodo">
+            <button v-on:click.stop="doThis">阻止单击事件继续传播,只会执行doThis</button>
+        </div>
+    </div>
+    <div id='app-2'>
+        <input type="button" value="JS原生写 按钮" @contextmenu="show($event)">
+    </div>
+    <div id="app-3">
+        <button @contextmenu.prevent="show()">使用VUE事件修饰符prevent</button>
+    </div>
+    <div id="app-4">
+        <div id="obj1" v-on:click.capture="doc">
+            obj1
+            <div id="obj2" v-on:click.capture="doc">
+                obj2
+                <div id="obj3" v-on:click="doc">
+                    obj3
+                    <div id="obj4" v-on:click="doc">
+                        obj4
+                        <!--。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。点击obj4的时候，弹出的顺序为：obj1、obj2、obj4、obj3；
+                        由于1，2有修饰符，故而先触发事件，然后就是4本身触发，最后冒泡事件。
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--点击obj4的时候会分别显示： obj4、 obj3、  obj1；
+.self会监视事件是否是直接作用到obj2上，若不是，则冒泡跳过该元素，-->
+    <div id="app-5">
+        <div id="obj1" v-on:click="doc">
+            obj1
+            <div id="obj2" v-on:click.self="doc">
+                obj2
+                <!--只有点击obj2才可以出发其点击事件。-->
+                <div id="obj3" v-on:click="doc">
+                    obj3
+                    <div id="obj4" v-on:click="doc">
+                        obj4
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        var app1 = new Vue({
+            el: '#app-1',
+            data: {
+                name: 'vue.js'
+            },
+            methods: {
+                dodo: function () {
+                    alert("dodo")
+                },
+                doThis: function () {
+                    alert("doThis")
+                }
+            }
+        })
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+
+            },
+            methods: {
+                show: function (ev) {
+                    alert(1);
+                    ev.preventDefault();
+                    //点击右键阻止默认行为
+                }
+            }
+        })
+        var app3 = new Vue({
+            el: "#app-3",
+            data: {
+
+            },
+            methods: {
+                show: function () {
+                    alert(1)
+                }
+            }
+        })
+        var app4 = new Vue({
+            el: "#app-4",
+            data: {
+                id: ''
+            },
+            methods: {
+                doc: function () {
+                    this.id = event.currentTarget.id;
+                    alert(this.id)
+                }
+            }
+
+        })
+        var app5 = new Vue({
+            el: '#app-5',
+            data: {
+                id: ''
+            },
+            methods: {
+                doc: function () {
+                    this.id = event.currentTarget.id;
+                    alert(this.id)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

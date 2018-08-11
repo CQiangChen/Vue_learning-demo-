@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="example"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        var data = {
+            a:1,
+        }
+        var vm = new Vue({
+            el:"#example",
+            data:data
+        })
+        console.log(vm.a == data.a)      //ture
+        console.log(vm.$data === data)    //true
+        console.log(vm.$el === document.querySelector('#example')) //true
+        // 重要：$watch在实例中的对应值改变时进行的工作
+        vm.$watch('a',function(newVal,oldVal){
+            //这个回调将在vm.a改变后执行
+        })
+        
+    </script>
+</body>
+</html>

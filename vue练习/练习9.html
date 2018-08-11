@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>兄弟组件传递</title>
+	<script src="./../vue.js"></script>
+</head>
+<body>
+	
+	<div id="root">
+		<pagea @_click="parentClick"></pagea>
+		<pageb 
+			ref="pageBRef" 
+			:content="content" 
+		>
+			
+		</pageb>
+	</div>
+
+	<script type="text/javascript">
+		
+		Vue.component('pagea',{
+			props:[],
+			template:'<button @click="handleClick">点击</button>',
+			methods:{
+				handleClick:function () {
+					this.$emit('_click','pagea Value');
+					//触发handleClick函数
+					//使父级能够监听到自定义名为_click的事件
+				}
+			}
+		})
+
+		Vue.component('pageb',{
+			props:['content'],
+			data() {
+				return {
+					pagebv:'pageb的值'
+				}
+			},
+			template:'<div>1{{ content }}</div>',
+			methods:{
+				funb:function(){
+					alert('成功调用pageb'+this.pagebv)
+				}
+			}
+		})
+
+		new Vue({
+			el:'#root',
+			data:{
+				content:'测试测试'
+			},
+			methods:{
+				parentClick:function(event){
+					console.log(this.$refs.pageBRef.pagebv)
+					// 利用$refs可以拿到pageb中的所有内容
+					console.log(event)
+					// 从pagea拿到对应的值
+					// 改变pageb中的pagebv的值使之等于pagea中传来的值
+					// 相当于两个兄弟组件互相传值
+					
+					this.$refs.pageBRef.pagebv = event
+					this.$refs.pageBRef.funb()
+					console.log(this.$refs.pageBRef.pagebv)
+				}
+			}
+		})
+
+	</script>
+
+</body>
+</html>

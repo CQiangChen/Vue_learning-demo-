@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="ex-1">
+        <ol>
+            <todo-item v-for="item in groceryList"
+                v-bind:todo = 'item'
+                v-bind:key = 'item.id'
+            >
+            </todo-item>
+        </ol>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        Vue.component('todo-item', {
+            props:['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+        var ex1 = new Vue({
+            el: '#ex-1',
+            data: {
+                groceryList: [
+                    { id: 0, text: '蔬菜' },
+                    { id: 1, text: '奶酪' },
+                    { id: 2, text: '随便其它什么人吃的东西' }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+Vue组件data必须为函数，不然会导致引用同一个对象，组件之间会互相影响，这个就达不到我们所期望达到的要求
+
+JS原型链
+var MyComponent = function() {}
+MyComponent.prototype.data = {
+  a: 1,
+  b: 2,
+}
+// 上面是一个虚拟的组件构造器，真实的组件构造器方法很多
+
+var component1 = new MyComponent()
+var component2 = new MyComponent()
+// 上面实例化出来两个组件实例，也就是通过<my-component>调用，创建的两个实例
+
+component1.data.a === component2.data.a // true
+component1.data.b = 5
+component2.data.b // 5
+
+这里可以看出两个实例引用了同一个对象，简单说就是箭头指向了同一个地址。
+修改一个值，另一个也会跟着一起修改
+！！引用传递！！
+
+所以 这两个实例应该有各自的域才行，所以我们需要加一个return 成为一个函数，就不会互相影响
+
+var MyComponent = function() {
+  this.data = this.data()
+}
+MyComponent.prototype.data = function() {
+  return {
+    a: 1,
+    b: 2,
+  }
+}
+
+这就是为何Vue的Data中这样写
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})

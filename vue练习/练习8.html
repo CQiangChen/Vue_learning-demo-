@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="./../vue.js"></script>
+</head>
+<body>
+	
+	<div id="root">
+		<div>
+			<input type="text" v-model="inputValue" name="" id="">
+			<button @click="handleSubmit">提交</button>
+		</div>
+		
+		<ul>
+			<li v-for="(list,index) of lists" :key="index">
+				{{list}}
+				<button @click="deleteValue(index)">删除</button>
+			</li>
+		</ul>
+
+		<ul>
+			<todo-list 
+				v-for="(list,index) of lists" 
+				:key="index"
+				:content="list"
+			></todo-list>
+		</ul>
+
+	</div>
+	<script>
+		Vue.component('todo-list',{
+			props:['content'],
+			template:'<li>{{ content }}</li>'
+		})	
+
+		new Vue({
+			el:"#root",
+			data:{
+				inputValue:'',
+				lists:[],
+			},
+			methods:{
+				handleSubmit:function(){
+					this.lists.push(this.inputValue)
+					this.inputValue = ''
+				},
+				deleteValue:function(index){
+					this.lists.splice(index,1)
+					
+				}
+			}
+		})
+	</script>
+
+</body>
+</html>

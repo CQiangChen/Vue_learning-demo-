@@ -1,0 +1,17 @@
+1、bind:class="{active:isActive}"
+也可以写成 bind:class = "[isActive? active :'']"
+类似小程序中
+class="{{hasActive?'active':''}}"
+
+2、绑定一个返回对象 可以用 计算属性 cpmputed
+
+3、truthy 真值：指的是在Boolean上下文中转换后的值为真的值
+除了false,0,"",null,undefined,NaN
+如：Boolean(value) === true ,value为truthy
+
+4、由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+
+当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue
+当你修改数组的长度时，例如：vm.items.length = newLength
+
+5、
